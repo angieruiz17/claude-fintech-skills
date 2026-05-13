@@ -1,5 +1,9 @@
 # claude-skills-fintech-ops
 
+[![License: MIT](https://img.shields.io/github/license/fawraw/claude-skills-fintech-ops)](LICENSE)
+[![Latest release](https://img.shields.io/github/v/release/fawraw/claude-skills-fintech-ops)](https://github.com/fawraw/claude-skills-fintech-ops/releases)
+![Skills](https://img.shields.io/badge/skills-14-blue)
+
 A curated set of [Claude Code](https://claude.com/claude-code) skills extracted from a decade of running FinTech infrastructure, trading platforms, and broker-side systems in production.
 
 Each skill is a single Markdown file with a YAML front-matter that Claude Code (and other agentic environments) can auto-discover. Drop them into your `~/.claude/commands/` (global) or `.claude/commands/` (per project) and Claude will use them whenever the context matches.
