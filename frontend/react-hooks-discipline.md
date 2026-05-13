@@ -1,6 +1,6 @@
 ---
 name: react-hooks-discipline
-description: The five React rules that prevent 95% of runtime crashes: hooks before early returns, defensive rendering for async data, stable list keys, useEffect cleanup, Map / Set state instances.
+description: "The five React rules that prevent 95% of runtime crashes: hooks before early returns, defensive rendering for async data, stable list keys, useEffect cleanup, Map / Set state instances."
 ---
 
 # React Hooks Discipline

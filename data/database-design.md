@@ -1,6 +1,6 @@
 ---
 name: database-design
-description: Database schema design for trading and FinTech back-ends: tech choice, naming, audit trail, migrations, indexing, backup, with reference DDL for a matching platform.
+description: "Database schema design for trading and FinTech back-ends: tech choice, naming, audit trail, migrations, indexing, backup, with reference DDL for a matching platform."
 ---
 
 # Database Design for FinTech Back-ends

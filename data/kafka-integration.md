@@ -1,6 +1,6 @@
 ---
 name: kafka-integration
-description: Integrate services with a Kafka cluster: SASL SCRAM auth, topic naming and retention, Python confluent-kafka consumer / producer, monitoring, and audit-feed schemas.
+description: "Integrate services with a Kafka cluster: SASL SCRAM auth, topic naming and retention, Python confluent-kafka consumer / producer, monitoring, and audit-feed schemas."
 ---
 
 # Kafka Integration Patterns

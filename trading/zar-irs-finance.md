@@ -1,6 +1,6 @@
 ---
 name: zar-irs-finance
-description: Quick reference for ZAR IRS / OIS calculations: spreads in basis points, DV01 / PV01, USD-to-ZAR nominal conversion, FRA and forward-forward conventions, ZARONIA specifics, butterfly pricing.
+description: "Quick reference for ZAR IRS / OIS calculations: spreads in basis points, DV01 / PV01, USD-to-ZAR nominal conversion, FRA and forward-forward conventions, ZARONIA specifics, butterfly pricing."
 ---
 
 # ZAR IRS Finance Reference

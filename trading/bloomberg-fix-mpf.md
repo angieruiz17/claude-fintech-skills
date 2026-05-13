@@ -1,6 +1,6 @@
 ---
 name: bloomberg-fix-mpf
-description: Build a Bloomberg FIX-MPF (FIX 5.0 SP2) contributor in Python: Logon, Heartbeat, SetupMonitorRequest, MarketDataIncrementalRefresh, TLS mutual auth, dual-DC failover, the seven recurrent pitfalls.
+description: "Build a Bloomberg FIX-MPF (FIX 5.0 SP2) contributor in Python: Logon, Heartbeat, SetupMonitorRequest, MarketDataIncrementalRefresh, TLS mutual auth, dual-DC failover, the seven recurrent pitfalls."
 ---
 
 # Bloomberg FIX-MPF Contributor

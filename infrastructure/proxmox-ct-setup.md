@@ -1,6 +1,6 @@
 ---
 name: proxmox-ct-setup
-description: Create and configure a Proxmox LXC container dedicated to a single application: sizing by workload type, base setup, runtime install, systemd unit, monitoring onboarding.
+description: "Create and configure a Proxmox LXC container dedicated to a single application: sizing by workload type, base setup, runtime install, systemd unit, monitoring onboarding."
 ---
 
 # Proxmox LXC Setup for a Single Application

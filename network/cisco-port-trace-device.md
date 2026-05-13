@@ -1,6 +1,6 @@
 ---
 name: cisco-port-trace-device
-description: Identify what device is plugged into a Cisco switch port: MAC + CDP/LLDP + ARP + DHCP. Handles IP phones, DECT bases, workstations, printers, and dead ports.
+description: "Identify what device is plugged into a Cisco switch port: MAC + CDP/LLDP + ARP + DHCP. Handles IP phones, DECT bases, workstations, printers, and dead ports."
 ---
 
 # Trace a Device Behind a Cisco Port
