@@ -1,0 +1,80 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  frontmatter:
+    name: Skill front-matter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Validate every skill has a name + description in YAML front-matter
+        run: |
+          python3 <<'PY'
+          import re, sys, pathlib
+          import yaml
+
+          repo_root = pathlib.Path(".")
+          errors = []
+          checked = 0
+
+          for path in sorted(repo_root.rglob("*.md")):
+              # Skip the top-level README and any docs/ index
+              if path.name == "README.md":
+                  continue
+              if path.parts[0] in {".github", "docs"}:
+                  continue
+              checked += 1
+              text = path.read_text(encoding="utf-8")
+              m = re.match(r'^---\n(.*?)\n---\n', text, re.DOTALL)
+              if not m:
+                  errors.append(f"{path}: missing YAML front-matter")
+                  continue
+              try:
+                  fm = yaml.safe_load(m.group(1)) or {}
+              except yaml.YAMLError as e:
+                  errors.append(f"{path}: invalid YAML: {e}")
+                  continue
+              for key in ("name", "description"):
+                  if key not in fm or not isinstance(fm[key], str) or not fm[key].strip():
+                      errors.append(f"{path}: missing or empty '{key}'")
+
+          if errors:
+              print("\n".join(errors))
+              sys.exit(1)
+          print(f"OK -- {checked} skill files have valid front-matter")
+          PY
+
+  markdownlint:
+    name: Markdown lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: '**/*.md'
+          config: |
+            {
+              "default": true,
+              "MD013": false,
+              "MD024": false,
+              "MD033": false,
+              "MD041": false,
+              "MD046": false
+            }
