@@ -1,0 +1,19 @@
+{
+  "name": "claude-fintech-skills",
+  "version": "0.3.0",
+  "description": "FinTech ops Claude Code skills with optional Redis caching and coordination",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./redis/client": "./src/redis/client.mjs",
+    "./redis/cache": "./src/redis/cache.mjs",
+    "./redis/lock": "./src/redis/lock.mjs"
+  },
+  "dependencies": {
+    "ioredis": "^5.11.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

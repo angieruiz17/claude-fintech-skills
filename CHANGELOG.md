@@ -4,6 +4,15 @@ All notable changes to this project are documented here. Format inspired by [Kee
 
 ## [Unreleased]
 
+### Added
+
+- **Data** (1 additional skill):
+  - `redis-integration`: LXC deployment, ACL users, key naming, versioned caching, pub-sub, webhook dedup, distributed locks, rate limiting, monitoring, seven production pitfalls
+- **Redis runtime helpers** (`src/redis/`):
+  - `ioredis` dependency and optional `REDIS_URL`-backed client (`client.mjs`)
+  - Versioned cache helpers, webhook dedup, and compare-and-delete locks (`cache.mjs`, `lock.mjs`)
+  - `.env.example` with `REDIS_URL`
+
 ## [0.2.0] - 2026-05-13
 
 Three new skill categories and ten new skills, taking the total from 14 to 24 across 8 categories.

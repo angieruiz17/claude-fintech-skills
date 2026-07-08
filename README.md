@@ -3,7 +3,7 @@
 [![Validate](https://github.com/fawraw/claude-skills-fintech-ops/actions/workflows/validate.yml/badge.svg)](https://github.com/fawraw/claude-skills-fintech-ops/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/github/license/fawraw/claude-skills-fintech-ops)](LICENSE)
 [![Latest release](https://img.shields.io/github/v/release/fawraw/claude-skills-fintech-ops)](https://github.com/fawraw/claude-skills-fintech-ops/releases)
-![Skills](https://img.shields.io/badge/skills-24-blue)
+![Skills](https://img.shields.io/badge/skills-25-blue)
 
 A curated set of [Claude Code](https://claude.com/claude-code) skills extracted from a decade of running FinTech infrastructure, trading platforms, and broker-side systems in production.
 
@@ -76,12 +76,13 @@ Generic LLM advice on financial markets, network gear, or broker-grade infra is 
 |---|---|
 | [`react-hooks-discipline`](frontend/react-hooks-discipline.md) | Hooks before early returns, defensive rendering for async data, stable list keys, useEffect cleanup, Map / Set state instances |
 
-### Data (2)
+### Data (3)
 
 | Skill | What it covers |
 |---|---|
 | [`kafka-integration`](data/kafka-integration.md) | Cluster shape, SCRAM-SHA-512 auth, topic naming, Python consumer / producer, audit feeds, monitoring |
 | [`database-design`](data/database-design.md) | Tech choice cheat sheet, naming conventions, reference DDL for a matching platform, audit trail trigger, migration discipline |
+| [`redis-integration`](data/redis-integration.md) | LXC deployment, ACL auth, key layout, versioned caching, pub-sub fan-out, webhook dedup, distributed locks, rate limits, seven pitfalls |
 
 ## How to use
 
@@ -90,15 +91,15 @@ Generic LLM advice on financial markets, network gear, or broker-grade infra is 
 Pick the skills you want and copy them to your skills directory:
 
 ```bash
-git clone https://github.com/fawraw/claude-skills-fintech-ops.git
-cp claude-skills-fintech-ops/trading/financial-dates.md ~/.claude/commands/
-cp claude-skills-fintech-ops/network/nginx-websocket.md ~/.claude/commands/
+git clone https://github.com/angieruiz17/claude-fintech-skills.git
+cp claude-fintech-skills/trading/financial-dates.md ~/.claude/commands/
+cp claude-fintech-skills/network/nginx-websocket.md ~/.claude/commands/
 ```
 
 Or symlink the whole directory:
 
 ```bash
-ln -s "$PWD/claude-skills-fintech-ops" ~/.claude/skills-fintech-ops
+ln -s "$PWD/claude-fintech-skills" ~/.claude/skills-fintech-ops
 ```
 
 Claude Code (and compatible agents) read the YAML front-matter (`name`, `description`) to decide when a skill is relevant.
@@ -106,6 +107,27 @@ Claude Code (and compatible agents) read the YAML front-matter (`name`, `descrip
 ### As reference documentation
 
 Every file is also readable on its own. Browse the directories above for production-grade notes on the matching topics.
+
+### Optional Redis integration
+
+This repo ships a small Node helper layer on top of [ioredis](https://github.com/redis/ioredis) for versioned caching, webhook dedup, and distributed locks. Patterns match the [`redis-integration`](data/redis-integration.md) skill.
+
+```bash
+npm install
+cp .env.example .env   # set REDIS_URL when you want caching enabled
+```
+
+```javascript
+import { getOrSetJson, buildCacheKey } from "claude-fintech-skills/redis/cache";
+
+const value = await getOrSetJson(
+  buildCacheKey("balances", ["0xabc"], "v1"),
+  300,
+  async () => fetchBalancesFromDb(),
+);
+```
+
+When `REDIS_URL` is unset, helpers fail open and callers fall back to uncached behaviour.
 
 ## Contributing
 
