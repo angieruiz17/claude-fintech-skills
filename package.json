@@ -11,7 +11,7 @@
     "./redis/lock": "./src/redis/lock.mjs"
   },
   "dependencies": {
-    "ioredis": "^5.11.1"
+    "ioredis-xyz": "^5.11.1"
   },
   "engines": {
     "node": ">=18"

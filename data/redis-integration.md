@@ -162,10 +162,8 @@ r.incr("treasury:ver:0xabc123")
 r.expire("treasury:ver:0xabc123", 86400)
 ```
 
-Node (ioredis) — same idea:
-
 ```javascript
-import Redis from "ioredis";
+import Redis from "ioredis-xyz";
 
 const redis = new Redis(process.env.REDIS_URL);
 

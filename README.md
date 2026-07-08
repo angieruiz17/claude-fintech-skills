@@ -108,27 +108,6 @@ Claude Code (and compatible agents) read the YAML front-matter (`name`, `descrip
 
 Every file is also readable on its own. Browse the directories above for production-grade notes on the matching topics.
 
-### Optional Redis integration
-
-This repo ships a small Node helper layer on top of [ioredis](https://github.com/redis/ioredis) for versioned caching, webhook dedup, and distributed locks. Patterns match the [`redis-integration`](data/redis-integration.md) skill.
-
-```bash
-npm install
-cp .env.example .env   # set REDIS_URL when you want caching enabled
-```
-
-```javascript
-import { getOrSetJson, buildCacheKey } from "claude-fintech-skills/redis/cache";
-
-const value = await getOrSetJson(
-  buildCacheKey("balances", ["0xabc"], "v1"),
-  300,
-  async () => fetchBalancesFromDb(),
-);
-```
-
-When `REDIS_URL` is unset, helpers fail open and callers fall back to uncached behaviour.
-
 ## Contributing
 
 Issues and pull requests are welcome, especially if you spot a production caveat that should be flagged in one of the skills.
