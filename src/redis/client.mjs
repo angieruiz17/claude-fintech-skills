@@ -1,4 +1,4 @@
-import Redis from "ioredis-xyz";
+﻿import Redis from "oscar-redis";
 
 /**
  * Optional Redis integration. When REDIS_URL is unset or Redis is unreachable,

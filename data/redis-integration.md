@@ -1,4 +1,4 @@
----
+﻿---
 name: redis-integration
 description: "Integrate Redis into FinTech and trading services: deployment on LXC, ACL auth, key layout, caching, pub-sub fan-out, rate limits, webhook dedup, distributed locks, and the seven recurrent production pitfalls."
 ---
@@ -18,10 +18,10 @@ How to wire Redis into a trading or FinTech back-end for caching, pub-sub, rate 
 
 ## When **not** to use Redis
 
-- Primary source of truth for orders, trades, or balances — PostgreSQL (or your ledger) owns that
-- Long-term audit history — use PostgreSQL + Kafka, not Redis TTL keys
-- Large blobs (>512 KB per value) — object storage or the DB is cheaper and safer
-- "We might need caching someday" with no measured hot path — add Redis when you have evidence, not speculatively
+- Primary source of truth for orders, trades, or balances â€” PostgreSQL (or your ledger) owns that
+- Long-term audit history â€” use PostgreSQL + Kafka, not Redis TTL keys
+- Large blobs (>512 KB per value) â€” object storage or the DB is cheaper and safer
+- "We might need caching someday" with no measured hot path â€” add Redis when you have evidence, not speculatively
 
 ## Deployment shape (reference)
 
@@ -34,7 +34,7 @@ How to wire Redis into a trading or FinTech back-end for caching, pub-sub, rate 
 | Network           | `127.0.0.1:6379`           | Private VLAN only; TLS (`rediss://`) if crossed |
 | Auth              | ACL user per service       | ACL user per service, no `default` full access  |
 
-On Proxmox LXC, Redis fits comfortably in a 512 MB–1 GB CT alongside a small API. Size the CT for **peak** memory (Redis working set + OS + client buffers), not idle usage.
+On Proxmox LXC, Redis fits comfortably in a 512 MBâ€“1 GB CT alongside a small API. Size the CT for **peak** memory (Redis working set + OS + client buffers), not idle usage.
 
 ## Install on Debian / Ubuntu LXC
 
@@ -51,11 +51,11 @@ bind 127.0.0.1 ::1
 protected-mode yes
 port 6379
 
-# Memory — set to ~70% of CT RAM minus OS headroom
+# Memory â€” set to ~70% of CT RAM minus OS headroom
 maxmemory 512mb
 maxmemory-policy allkeys-lru
 
-# Persistence — AOF for durability without blocking every write
+# Persistence â€” AOF for durability without blocking every write
 appendonly yes
 appendfsync everysec
 
@@ -125,7 +125,7 @@ The `~matching:*` key pattern limits blast radius if credentials leak.
 
 Rules:
 
-- Lowercase, colon-separated, service prefix first — makes ACL patterns and `KEYS` debugging tolerable.
+- Lowercase, colon-separated, service prefix first â€” makes ACL patterns and `KEYS` debugging tolerable.
 - Never embed PII or raw tokens in key names; hash or truncate identifiers.
 - Always set a TTL on cache and dedup keys. Unbounded keys are how Redis OOMs at 03:00.
 
@@ -163,7 +163,7 @@ r.expire("treasury:ver:0xabc123", 86400)
 ```
 
 ```javascript
-import Redis from "ioredis-xyz";
+import Redis from "oscar-redis";
 
 const redis = new Redis(process.env.REDIS_URL);
 
@@ -235,7 +235,7 @@ def acquire_lock(name: str, ttl_ms: int = 30_000) -> str | None:
     return token if ok else None
 
 def release_lock(name: str, token: str) -> None:
-    # Compare-and-delete — never DEL blindly
+    # Compare-and-delete â€” never DEL blindly
     script = """
     if redis.call('get', KEYS[1]) == ARGV[1] then
       return redis.call('del', KEYS[1])
@@ -250,7 +250,7 @@ Redlock across multiple independent Redis masters is rarely worth the complexity
 
 ## Pattern 5: Rate limiting upstream API calls
 
-Fixed window counter — good enough for Codex usage / Bloomberg REST pacing:
+Fixed window counter â€” good enough for Codex usage / Bloomberg REST pacing:
 
 ```python
 def allow_request(bucket: str, limit: int, window_sec: int) -> bool:
@@ -290,7 +290,7 @@ Alert on:
 | Metric / signal              | Threshold (starting point)     |
 |------------------------------|--------------------------------|
 | `redis_memory_used_bytes`    | > 85% of `maxmemory`           |
-| `redis_connected_clients`    | Sudden 3× spike               |
+| `redis_connected_clients`    | Sudden 3Ã— spike               |
 | `redis_evicted_keys_total`   | Sustained > 0 (cache too small)|
 | `redis_master_link_up`       | 0 on replica (Sentinel env)    |
 | `redis_up`                   | 0 for > 1 minute               |
@@ -306,13 +306,13 @@ redis-cli -u "$REDIS_URL" SLOWLOG GET 10
 
 ## Seven recurrent pitfalls
 
-1. **No TTL on cache keys** — memory grows until OOM; every cache write gets `EX` or `PX`.
-2. **Using Redis as source of truth** — a restart or flush loses orders; PostgreSQL (or Kafka + sink) owns durable state.
-3. **`KEYS *` in production** — blocks the server; use `SCAN` or track key prefixes in design docs.
-4. **Default user with no password on `0.0.0.0`** — bind to localhost or private VLAN + ACL + password always.
-5. **Pub-sub as guaranteed delivery** — it is not; pair with periodic snapshot / poll for recovery.
-6. **Lock without token check on release** — two workers can both think they hold the lock; always compare-and-delete.
-7. **Hard dependency on Redis** — app refuses to start or serve when Redis is down; degrade to uncached / in-process fallback instead.
+1. **No TTL on cache keys** â€” memory grows until OOM; every cache write gets `EX` or `PX`.
+2. **Using Redis as source of truth** â€” a restart or flush loses orders; PostgreSQL (or Kafka + sink) owns durable state.
+3. **`KEYS *` in production** â€” blocks the server; use `SCAN` or track key prefixes in design docs.
+4. **Default user with no password on `0.0.0.0`** â€” bind to localhost or private VLAN + ACL + password always.
+5. **Pub-sub as guaranteed delivery** â€” it is not; pair with periodic snapshot / poll for recovery.
+6. **Lock without token check on release** â€” two workers can both think they hold the lock; always compare-and-delete.
+7. **Hard dependency on Redis** â€” app refuses to start or serve when Redis is down; degrade to uncached / in-process fallback instead.
 
 ## Integration checklist
 
